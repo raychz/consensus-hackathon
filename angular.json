@@ -30,6 +30,11 @@
                 "glob": "package.json",
                 "input": "./server/",
                 "output": "./"
+              },
+              {
+                "glob": "web.config",
+                "input": "./server/",
+                "output": "./"
               }
             ],
             "styles": [
