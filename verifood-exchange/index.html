@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>VeriFoodX</title>
+  <meta name="author" content="Jake Rocheleau">
+  <link rel="shortcut icon" href="http://d15dxvojnvxp1x.cloudfront.net/assets/favicon.ico">
+  <link rel="icon" href="http://d15dxvojnvxp1x.cloudfront.net/assets/favicon.ico">
+  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+
+  <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+</head>
+
+<body>
+
+  <div id="w">
+    <h1>VefiFood X</h1>
+    <p>Start Trading Food Commodities</p>
+    <a href="#" id="ghsubmitbtn" align="right">Start Now!</a>
+
+    <div id="ghapidata" class="clearfix"></div>
+  </div>
+  <div id="root"></div>
+<script type="text/javascript">
+$(function(){
+  var outhtml = '<h2> <span class="smallname"></h2>';
+        outhtml = outhtml + '<div class="repolist clearfix">';
+  const app = document.getElementById('root');
+  const container = document.createElement('div');
+  container.setAttribute('class', 'container');
+  app.appendChild(container);
+
+  $('#ghsubmitbtn').on('click', function(e){
+    e.preventDefault();
+    $('#ghapidata').html('<div id="loader"><img src="css/loader.gif" alt="loading..."></div>');
+    requestJSON(function(json) {
+    }); // end requestJSON Ajax call
+  }); // end click event handler
+
+  function requestJSON(url, callback) {
+    var commoditiesSrc = ["https://image.flaticon.com/icons/svg/135/135687.svg", "https://image.flaticon.com/icons/svg/135/135728.svg",
+    "https://image.flaticon.com/icons/svg/135/135715.svg", "https://image.flaticon.com/icons/svg/135/135620.svg", "https://image.flaticon.com/icons/svg/135/135702.svg"];
+
+    $.ajax({
+      method: 'GET',
+      url: "https://api_demo.alphapoint.com:8443/AP/GetProducts?OMSId=1",
+      dataType: 'json',
+      success: function(commodityObjects) {
+        console.log(commodityObjects);
+        $.each (commodityObjects, function (commodityObject) {
+        console.log(commodityObject);
+        const card = document.createElement('div');
+        card.setAttribute('class', 'card');
+
+        const h1 = document.createElement('h1');
+        h1.textContent = commodityObjects[commodityObject].Product;
+
+         var img = document.createElement("IMG");
+         img.src = commoditiesSrc[commodityObject%4];
+         img.style.height = '40px';
+        const p = document.createElement('p');
+        p.textContent = `${commodityObjects[commodityObject].ProductFullName}\n`;
+
+        const priceText = document.createElement('h2');
+
+        priceText.setAttribute('class', 'priceTag');
+        var myUrl = "https://api_demo.alphapoint.com:8443/AP/GetL2Snapshot?OMSId=1&InstrumentId="+(commodityObject+1)+"&Depth=1";
+        requestJSONPrices(myUrl, card, function(price) {
+          priceText.textContent = price;
+        });
+
+        container.appendChild(card);
+        card.appendChild(h1);
+        card.appendChild(img);
+        card.appendChild(priceText);
+
+
+        var btn = document.createElement("BUTTON");
+        btn.setAttribute('id', 'ghsubmitbtn2');
+        btn.setAttribute('onclick', "location.href='#popup1'");
+        btn.setAttribute('class', 'customButtomLeft');
+        var t = document.createTextNode("Buy");
+        btn.appendChild(t);
+        card.appendChild(btn);
+
+        // sell buttom
+        var btnSell = document.createElement("BUTTON");
+        btnSell.setAttribute('id', 'ghsubmitbtn2');
+        btnSell.setAttribute('onclick', "location.href='#popup2'");
+        btnSell.setAttribute('class', 'customButtomRight');
+        var tSell = document.createTextNode("Sell");
+        btnSell.appendChild(tSell);
+        card.appendChild(btnSell);
+
+        }); // end for each
+      } // end success
+    }); // end ajax
+    $('#w').fadeOut(700, function(){ $(this).remove();}); // end of animation
+  } // end REquest Json
+
+  function requestJSONPrices(url, card, callback) {
+    $.ajax({
+      method: 'GET',
+      url: url,
+      dataType: 'json',
+      success: function(xhr) {
+        if(xhr[0]) {
+            callback("$" + xhr[0][4]);
+        } else {
+          callback("$" + Math.floor((Math.random() * 1000) + 1));
+        }
+
+      } // end success
+    }); // end ajax
+  }
+
+});
+
+
+
+</script>
+
+<div id="popup1" class="overlay">
+	<div class="popup">
+		<h1>Buy Order</h1>
+		<a class="close" href="#">&times;</a>
+    <div class=container>
+    <label for="text"><b>Buy Amount</b></label>
+    <input type="text" placeholder="Buy Amount" name="email" required>
+
+    <label for="text"><b> Bid Price (USD)</b></label>
+    <input type="text" placeholder="Bid Price (USD)" name="email" required>
+    <div class="clearfix">
+      <button type="button" class="cancelbtn" id="ghsubmitbtn" action="index.html">Cancel</button>
+      <button type="submit" class="signupbtn" id="ghsubmitbtn" href="index.html">Place Order</button>
+    </div>
+  </div>
+	</div>
+</div>
+
+<div id="popup2" class="overlay">
+	<div class="popup">
+		<h1>Sell Order</h1>
+		<a class="close" href="#">&times;</a>
+    <div class=container>
+    <label for="text"><b>Sell Amount</b></label>
+    <input type="text" placeholder="Sell Amount" name="email" required>
+
+    <label for="text"><b> Bid Price (USD)</b></label>
+    <input type="text" placeholder="Ask Price (USD)" name="email" required>
+    <div class="clearfix">
+      <button type="button" class="cancelbtn" id="ghsubmitbtn" href="index.html" onclick="location.reload();">Cancel</button>
+      <button type="submit" class="signupbtn" id="ghsubmitbtn" href="index.html">Place Order</button>
+    </div>
+  </div>
+	</div>
+</div>
+
+
+</body>
+</html>

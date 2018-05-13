@@ -1,24 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, transition } from '@angular/core';
+import { AzureWorkbenchService } from '../azure/azure-workbench.service';
 
 @Component({
   selector: 'app-table-list',
   templateUrl: './table-list.component.html',
-  styleUrls: ['./table-list.component.css']
+  styleUrls: ['./table-list.component.css'],
 })
 export class TableListComponent implements OnInit {
   static compliance = {
-    COMPLIANT: 'COMPLIANT',
-    INCOMPLIANT: 'INCOMPLIANT',
-    IN_TRANSIT: 'IN_TRANSIT',
+    Created: 'Created',
+    InTransit: 'In Transit',
+    Completed: 'Completed',
   };
 
+  complianceArray = ['Created', 'In Transit', 'Completed'];
+
+  // 31 created
+  // 30 in transition
+  // 28 completed
   restaurant1 = {
     name: 'The View',
     address: '1535 Broadway, New York, NY 10036',
     farms: [
-      { id: 'FJI873', name: 'Ardith Mae Farm', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.COMPLIANT },
-      { id: 'JFO949', name: 'Baker\'s Bounty', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.INCOMPLIANT },
-      { id: 'PFI182', name: 'Catskill Merino', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.IN_TRANSIT }
+      { id: 31, name: 'Ardith Mae Farm', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.Created },
+      { id: 30, name: 'Baker\'s Bounty', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.InTransit },
+      { id: 28, name: 'Catskill Merino', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.Completed }
     ]
   };
 
@@ -26,9 +32,9 @@ export class TableListComponent implements OnInit {
     name: 'Catch NYC',
     address: '21 9th Ave, New York, NY 10014',
     farms: [
-      { id: 'FJI873', name: 'Dan Madura Jr Farms', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.COMPLIANT },
-      { id: 'JFO949', name: 'Early Greens Farm', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.INCOMPLIANT },
-      { id: 'PFI182', name: 'Fantasy Fruit Farm', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.IN_TRANSIT }
+      { id: 'FJI873', name: 'Dan Madura Jr Farms', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.Created },
+      { id: 'JFO949', name: 'Early Greens Farm', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.Created },
+      { id: 'PFI182', name: 'Fantasy Fruit Farm', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.Created }
     ]
   };
 
@@ -36,9 +42,9 @@ export class TableListComponent implements OnInit {
     name: 'Orso',
     address: '322 W 46th St, New York, NY 10036',
     farms: [
-      { id: 'FJI873', name: 'Gail\'s Farm', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.COMPLIANT },
-      { id: 'JFO949', name: 'Healthway Farms', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.INCOMPLIANT },
-      { id: 'PFI182', name: 'Josephine\'s Feast', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.IN_TRANSIT }
+      { id: 'FJI873', name: 'Gail\'s Farm', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.InTransit },
+      { id: 'JFO949', name: 'Healthway Farms', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.InTransit },
+      { id: 'PFI182', name: 'Josephine\'s Feast', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.InTransit }
     ]
   };
 
@@ -46,9 +52,23 @@ export class TableListComponent implements OnInit {
 
   selectedRestaurantIndex = undefined;
 
-  constructor() { }
+  constructor(private azureService: AzureWorkbenchService) { }
 
   ngOnInit() {
+    setInterval(() => {
+      this.getCompliance();
+    }, 5000);
   }
 
+  getCompliance() {
+    return this.azureService.getLatestContracts().then(data => {
+      const { contracts } = data;
+      console.log(contracts);
+      for (let i = 0; i < contracts.length; i++) {
+        if (contracts[i].id === this.restaurant1.farms[i].id) {
+          this.restaurant1.farms[i].compliance = this.complianceArray[contracts[i].contractProperties[0].value];
+        }
+      }
+    });
+  }
 }

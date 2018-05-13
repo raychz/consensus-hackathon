@@ -29,6 +29,8 @@ import {
   AgmCoreModule
 } from '@agm/core';
 
+import { AzureWorkbenchService } from './azure/azure-workbench.service';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -58,7 +60,7 @@ import {
     UpgradeComponent,
 
   ],
-  providers: [],
+  providers: [AzureWorkbenchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
