@@ -13,11 +13,11 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { UpgradeComponent } from './upgrade/upgrade.component';
 
 const routes: Routes =[
-    { path: 'dashboard',      component: DashboardComponent },
+    { path: 'farmers',        component: TypographyComponent },
+    { path: 'restaurants',    component: TableListComponent },
     { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'restaurants',     component: TableListComponent },
-    { path: 'typography',     component: TypographyComponent },
-    { path: 'icons',          component: IconsComponent },
+    { path: 'dashboard',      component: DashboardComponent },
+    // { path: 'icons',          component: IconsComponent },
     { path: 'maps',           component: MapsComponent },
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'upgrade',        component: UpgradeComponent },

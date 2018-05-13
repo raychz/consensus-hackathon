@@ -1,95 +1,115 @@
 <div class="main-content">
-  <div class="container-fluid">
-    <div class="card">
-        <div class="card-header card-header-danger">
-            <h4 class="card-title">Material Dashboard Heading</h4>
-            <p class="card-category">Created using Roboto Font Family</p>
-        </div>
-        <div class="card-body">
-            <div id="typography">
-                <div class="card-title">
-                    <h2>Typography</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Select a Farmer</h4>
+                        <p class="card-category">View local farmers and producers</p>
+                    </div>
+                    <div class="card-body">
+                        <mat-form-field>
+                            <mat-select [(value)]="selectedFarmerIndex" placeholder="Select...">
+                                <mat-option value="0">Ardith Mae Farm</mat-option>
+                                <mat-option value="1">Baker's Bounty</mat-option>
+                                <mat-option value="2">Catskill Merino</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="tim-typo">
-                        <h1>
-                            <span class="tim-note">Header 1</span>The Life of Material Dashboard </h1>
+            </div>
+            <div class="col-md-8" *ngIf="selectedFarmerIndex > -1">
+                <div class="card">
+                    <div class="card-header card-header-tabs card-header-danger">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <h4 class="nav-tabs-title">{{farmers[selectedFarmerIndex].name}}:</h4>
+                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="nav-item">
+                                        <a mat-button class="nav-link active" href="#profile" data-toggle="tab">
+                                                                <i class="material-icons">assignment</i> Contracts w/Restaurants
+                                                                <div class="ripple-container"></div>
+                                                            </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a mat-button class="nav-link" href="#profile" data-toggle="tab">
+                                                        <i class="material-icons">shopping_cart</i> Produce
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a mat-button class="nav-link" href="#messages" data-toggle="tab">
+                                                        <i class="material-icons">code</i> Website
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a mat-button class="nav-link" href="#settings" data-toggle="tab">
+                                                        <i class="material-icons">star</i> Reviews (4.3/5)
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tim-typo">
-                        <h2>
-                            <span class="tim-note">Header 2</span>The Life of Material Dashboard</h2>
+                    <div class="card-body">
+                        <div class="table-responsive">
+
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        Compliance
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Address
+                                    </th>
+                                    <th>
+                                        Last Shipment
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let f of farmers[selectedFarmerIndex].restaurants">
+                                        <tr>
+                                            <td class="text-primary">
+                                                {{f.compliance}}
+                                            </td>
+                                            <td>
+                                                {{f.name}}
+                                            </td>
+                                            <td>
+                                                {{f.address}}
+                                            </td>
+                                            <td>
+                                                January 1, 2020
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="tim-typo">
-                        <h3>
-                            <span class="tim-note">Header 3</span>The Life of Material Dashboard</h3>
+                    <div class="card-footer">
+                        <p>{{farmers[selectedFarmerIndex].name}} is located at {{farmers[selectedFarmerIndex].county}}, {{farmers[selectedFarmerIndex].state}}.</p>
                     </div>
-                    <div class="tim-typo">
-                        <h4>
-                            <span class="tim-note">Header 4</span>The Life of Material Dashboard</h4>
+                </div>
+            </div>
+            <div class="col-md-4" *ngIf="selectedFarmerIndex > -1">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="#pablo">
+                                    <img class="img" src="../assets/img/faces/mary.jpg" />
+                                </a>
                     </div>
-                    <div class="tim-typo">
-                        <h5>
-                            <span class="tim-note">Header 5</span>The Life of Material Dashboard</h5>
-                    </div>
-                    <div class="tim-typo">
-                        <h6>
-                            <span class="tim-note">Header 6</span>The Life of Material Dashboard</h6>
-                    </div>
-                    <div class="tim-typo">
-                        <p>
-                            <span class="tim-note">Paragraph</span>
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at.</p>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Quote</span>
-                        <blockquote class="blockquote">
-                            <p>
-                                I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at.
-                            </p>
-                            <small>
-                                Kanye West, Musician
-                            </small>
-                        </blockquote>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Muted Text</span>
-                        <p class="text-muted">
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...
-                        </p>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Primary Text</span>
-                        <p class="text-primary">
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers... </p>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Info Text</span>
-                        <p class="text-info">
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers... </p>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Success Text</span>
-                        <p class="text-success">
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers... </p>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Warning Text</span>
-                        <p class="text-warning">
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...
-                        </p>
-                    </div>
-                    <div class="tim-typo">
-                        <span class="tim-note">Danger Text</span>
-                        <p class="text-danger">
-                            I will be the leader of a company that ends up being worth billions of dollars, because I got the answers... </p>
-                    </div>
-                    <div class="tim-typo">
-                        <h2>
-                            <span class="tim-note">Small Tag</span>
-                            Header with small subtitle
-                            <br>
-                            <small>Use "small" tag for the headers</small>
-                        </h2>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">Founder</h6>
+                        <h4 class="card-title">Mary Ardith</h4>
+                        <p class="card-description">
+                            In 1978, when Mary and David produced their original three jams and jellies, they used native blueberries from their woods and raspberries and strawberries from... </p>
+                        <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
                     </div>
                 </div>
             </div>
