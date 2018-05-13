@@ -13,17 +13,17 @@
         "favicon.ico",
         {
           "glob": "index.js",
-          "input": "./server/",
+          "input": "../server/",
           "output": "./"
         },
         {
           "glob": "package.json",
-          "input": "./server/",
+          "input": "../server/",
           "output": "./"
         },
         {
           "glob": "web.config",
-          "input": "./server/",
+          "input": "../server/",
           "output": "./"
         }
       ],
