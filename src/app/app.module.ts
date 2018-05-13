@@ -9,6 +9,7 @@ import {
   MatInputModule,
   MatRippleModule,
   MatTooltipModule,
+  MatSelectModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app.routing';
@@ -39,6 +40,7 @@ import {
     MatRippleModule,
     MatInputModule,
     MatTooltipModule,
+    MatSelectModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
