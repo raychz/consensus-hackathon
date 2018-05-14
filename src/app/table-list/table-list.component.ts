@@ -22,9 +22,9 @@ export class TableListComponent implements OnInit {
     name: 'The View',
     address: '1535 Broadway, New York, NY 10036',
     farms: [
-      { id: 31, name: 'Ardith Mae Farm', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.Created },
-      { id: 30, name: 'Baker\'s Bounty', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.InTransit },
-      { id: 28, name: 'Catskill Merino', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.Completed }
+      { id: 35, name: 'Ardith Mae Farm', county: 'Columbia County', state: 'New York', compliance: TableListComponent.compliance.Created },
+      { id: 32, name: 'Baker\'s Bounty', county: 'Union County', state: 'New Jersey', compliance: TableListComponent.compliance.InTransit },
+      { id: 34, name: 'Catskill Merino', county: 'Sullivan County', state: 'New York', compliance: TableListComponent.compliance.Completed }
     ]
   };
 
@@ -55,18 +55,20 @@ export class TableListComponent implements OnInit {
   constructor(private azureService: AzureWorkbenchService) { }
 
   ngOnInit() {
-    setInterval(() => {
-      this.getCompliance();
-    }, 5000);
+    // setInterval(() => {
+    //   this.getCompliance();
+    // }, 5000);
   }
 
   getCompliance() {
     return this.azureService.getLatestContracts().then(data => {
       const { contracts } = data;
-      console.log(contracts);
       for (let i = 0; i < contracts.length; i++) {
-        if (contracts[i].id === this.restaurant1.farms[i].id) {
-          this.restaurant1.farms[i].compliance = this.complianceArray[contracts[i].contractProperties[0].value];
+        for (let j = 0; j < this.restaurant1.farms.length; j++) {
+          if (contracts[i].id === this.restaurant1.farms[j].id) {
+            const complianceValue = contracts[i].contractProperties[0].value;
+            this.restaurant1.farms[j].compliance = this.complianceArray[complianceValue];
+          }
         }
       }
     });
