@@ -1,4 +1,8 @@
-# ConsensusHackathon
+# Consensus Hackathon
+
+My team and I built this application over a period of 24 hours for the Consensus Hackathon in New York City on May 12, 2018.  See our winning submission [here](https://devpost.com/software/consensus-hackathon).
+
+--
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
 
